@@ -1,0 +1,44 @@
+# hist.fct
+# gnuplot macro for providing a functionality similar to the hist() function in octave
+# Note, that the variables binwidth and binstart has to be set before calling this function
+# AUTHOR: Hagen Wierstorf
+set macros
+# set width of single bins in histogram
+FONT="font 'helvetica,12'"
+binwidth = 2
+binstart = 6
+set yrange [0:10]
+
+set xtics 4 out
+set mxtics 2
+set tics scale 0.75 @FONT
+set boxwidth 0.9*binwidth
+# set fill style of bins
+set style fill solid 0.5
+# define macro for plotting the histogram
+set grid
+set key off
+
+set term pngcairo transparent size 600,400
+
+set o 'D:\self-development\data science\udacity\p1\second_version\frequency_plot.png'
+set multiplot layout 1,2
+
+hist1 = 'u (binwidth*(floor(($1-binstart)/binwidth)+0.5)+binstart):(1.0) smooth freq w boxes'
+hist2 = 'u (binwidth*(floor(($2-binstart)/binwidth)+0.5)+binstart):(1.0) smooth freq w boxes'
+
+
+set title 'Congruent Distribution' @FONT
+set xlabel 'Time(min)' @FONT
+set ylabel 'Number of occurence' @FONT
+set xrange [4:28]
+plot 'D:\self-development\data science\udacity\p1\second_version\box_plot.txt'  @hist1 ls 1
+set title 'Incongruent Distribution' @FONT
+set xlabel 'Time(min)' @FONT
+set ylabel 'Number of occurence' @FONT
+set xrange [10:36]
+plot 'D:\self-development\data science\udacity\p1\second_version\box_plot.txt' @hist2 ls 2
+
+unset multiplot
+
+set o
